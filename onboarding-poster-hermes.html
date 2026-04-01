@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wo-Bot Hermes 導入指南</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&display=swap');
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', 'PingFang TC', sans-serif;
+    background: #FAF6F0;
+    color: #3C2415;
+    line-height: 1.6;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* === HEADER — Hermès Invitation === */
+  .header {
+    background: #FAF6F0;
+    color: #3C2415;
+    text-align: center;
+    padding: 40px 40px 34px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: none;
+  }
+  /* Orange accent band at top */
+  .header .top-band {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #C9A96E, #E8571F, #D94F1A, #E8571F, #C9A96E);
+  }
+  /* Ornamental border frame */
+  .header .frame {
+    position: absolute;
+    top: 14px; left: 20px; right: 20px; bottom: 10px;
+    border: 1.5px solid #C9A96E;
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  .header .frame::before {
+    content: '';
+    position: absolute;
+    top: 4px; left: 4px; right: 4px; bottom: 4px;
+    border: 0.5px solid #C9A96E;
+    opacity: 0.4;
+  }
+  /* Corner ornaments */
+  .header .corner { position: absolute; width: 24px; height: 24px; }
+  .header .corner svg { width: 100%; height: 100%; }
+  .header .corner.tl { top: 10px; left: 16px; }
+  .header .corner.tr { top: 10px; right: 16px; transform: scaleX(-1); }
+  .header .corner.bl { bottom: 6px; left: 16px; transform: scaleY(-1); }
+  .header .corner.br { bottom: 6px; right: 16px; transform: scale(-1,-1); }
+  /* Divider ornament */
+  .header .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0 6px;
+  }
+  .header .divider .line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #C9A96E, transparent);
+  }
+  .header .divider .diamond {
+    width: 6px; height: 6px;
+    background: #C9A96E;
+    transform: rotate(45deg);
+  }
+  .header .brand-top {
+    font-size: 0.65em;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #C9A96E;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.6em;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: #E8571F;
+    position: relative;
+  }
+  .header h1 .wb { color: #3C2415; }
+  .header .sub {
+    font-size: 0.85em;
+    color: #8B7355;
+    margin-top: 2px;
+    letter-spacing: 2px;
+    position: relative;
+  }
+  .header .badge {
+    display: inline-block;
+    background: transparent;
+    border: 1.5px solid #C9A96E;
+    color: #3C2415;
+    border-radius: 0;
+    padding: 5px 22px;
+    margin-top: 6px;
+    font-size: 0.75em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    position: relative;
+  }
+  .header .luxury-line {
+    font-size: 0.58em;
+    color: #C9A96E;
+    margin-top: 8px;
+    letter-spacing: 3px;
+    font-style: italic;
+    position: relative;
+  }
+
+  /* === Banner illustration === */
+  .banner {
+    background: #B8D8E8;
+    padding: 0;
+    overflow: hidden;
+    line-height: 0;
+  }
+  .banner svg { width: 100%; height: auto; display: block; }
+
+  .container { padding: 24px 28px; }
+
+  /* === Section === */
+  .sec-title {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #D94F1A;
+    margin-bottom: 14px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #C9A96E;
+    display: inline-block;
+    letter-spacing: 1px;
+  }
+
+  /* === 五大亮點 — 整合橫條 === */
+  .highlights {
+    display: flex;
+    gap: 0;
+    background: #fff;
+    border: 1px solid #E8D5B0;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(201,169,110,0.1);
+  }
+  .hl {
+    flex: 1;
+    text-align: center;
+    padding: 14px 6px 10px;
+    border-right: 1px solid #E8D5B0;
+    position: relative;
+  }
+  .hl:last-child { border-right: none; }
+  .hl .hl-i { font-size: 1.8em; margin-bottom: 2px; }
+  .hl .hl-t { font-size: 0.82em; font-weight: 700; color: #3C2415; line-height: 1.3; }
+  .hl .hl-d { font-size: 0.65em; color: #8B7355; margin-top: 2px; font-style: italic; }
+
+  /* === 兩欄主體 === */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* Steps */
+  .stp {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .stp:last-child { margin-bottom: 0; }
+  .s-num {
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, #E8571F, #D94F1A);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 0.85em;
+    flex-shrink: 0;
+    margin-top: 1px;
+    box-shadow: 0 2px 6px rgba(217,79,26,0.3);
+  }
+  .s-body h4 { font-size: 0.95em; font-weight: 700; color: #3C2415; margin-bottom: 2px; }
+  .s-body p { font-size: 0.82em; color: #6B5744; }
+  .bot-id {
+    display: inline-block;
+    background: #FFF5EB;
+    border: 1px solid #E8D5B0;
+    color: #D94F1A;
+    padding: 0 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+    font-weight: 600;
+  }
+
+  /* Flow chips */
+  .flow { display: flex; align-items: center; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+  .fc { font-size: 0.7em; padding: 2px 7px; border-radius: 5px; font-weight: 600; }
+  .fc.a { background: #FFF5EB; color: #D94F1A; }
+  .fc.b { background: #F0F7EE; color: #3D7A2E; }
+  .fc.c { background: #FEF0F0; color: #b91c1c; }
+  .fa { color: #C9A96E; font-size: 0.72em; }
+
+  /* Inline mini TG mock */
+  .mini-mock {
+    background: #c8d7c1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' opacity='0.06'%3E%3Ccircle cx='30' cy='30' r='8' fill='%23000'/%3E%3Ccircle cx='100' cy='60' r='6' fill='%23000'/%3E%3Ccircle cx='170' cy='25' r='5' fill='%23000'/%3E%3Ccircle cx='60' cy='120' r='7' fill='%23000'/%3E%3Ccircle cx='140' cy='140' r='5' fill='%23000'/%3E%3Ccircle cx='30' cy='170' r='6' fill='%23000'/%3E%3Ccircle cx='170' cy='170' r='8' fill='%23000'/%3E%3C/svg%3E");
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    margin-top: 8px;
+  }
+  .mini-mock .mm-body { padding: 8px 6px; }
+
+  /* === TG Mock（右側大模擬）=== */
+  .tg-mock {
+    background: #c8d7c1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' opacity='0.06'%3E%3Ccircle cx='30' cy='30' r='8' fill='%23000'/%3E%3Ccircle cx='100' cy='60' r='6' fill='%23000'/%3E%3Ccircle cx='170' cy='25' r='5' fill='%23000'/%3E%3Ccircle cx='60' cy='120' r='7' fill='%23000'/%3E%3Ccircle cx='140' cy='140' r='5' fill='%23000'/%3E%3Ccircle cx='30' cy='170' r='6' fill='%23000'/%3E%3Ccircle cx='170' cy='170' r='8' fill='%23000'/%3E%3C/svg%3E");
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 13px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+  }
+  .tg-mock .tg-topbar {
+    background: #517da2;
+    color: white;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tg-mock .tg-avatar {
+    width: 30px; height: 30px;
+    background: #6ea9d7;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .tg-mock .tg-name { font-weight: 600; font-size: 0.9em; }
+  .tg-mock .tg-online { font-size: 11px; color: rgba(255,255,255,0.7); }
+  .tg-mock .tg-body { padding: 10px 8px; }
+  .tg-mock .tg-label {
+    text-align: center;
+    font-size: 0.7em;
+    color: #6b7280;
+    background: rgba(0,0,0,0.06);
+    padding: 2px 8px;
+    border-radius: 8px;
+    display: inline-block;
+    margin: 4px auto 6px;
+  }
+  .tg-mock .tg-label-wrap { text-align: center; }
+
+  .tg-bubble {
+    max-width: 88%;
+    padding: 6px 10px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    line-height: 1.45;
+    color: #000;
+    word-break: break-word;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    font-size: 0.92em;
+  }
+  .tg-bubble.out { background: #eeffde; margin-left: auto; border-bottom-right-radius: 4px; }
+  .tg-bubble.in { background: #ffffff; margin-right: auto; border-bottom-left-radius: 4px; }
+  .tg-bubble .tg-ts { font-size: 10px; color: #8fac82; text-align: right; margin-top: 3px; }
+  .tg-bubble.in .tg-ts { color: #a0adb8; }
+  .tg-bubble .tg-check { color: #4fae4e; font-size: 9px; margin-left: 3px; }
+  .tg-bubble .sender { font-size: 11px; font-weight: 600; margin-bottom: 1px; }
+  .tg-bubble .sender.mgr { color: #c0392b; }
+  .tg-bubble .sender.bot { color: #2471a3; }
+  .tg-btn-row { display: flex; gap: 3px; margin-top: 5px; }
+  .tg-btn { flex: 1; background: #6bac5e; color: #fff; border: none; padding: 5px 3px; border-radius: 5px; font-size: 11px; text-align: center; cursor: default; font-weight: 500; }
+  .tg-code { background: #eef2f7; padding: 1px 4px; border-radius: 3px; font-size: 0.82em; color: #5288c1; font-family: monospace; }
+
+  /* === Footer === */
+  .footer {
+    padding: 16px 28px;
+    border-top: 2px solid #C9A96E;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.78em;
+    color: #8B7355;
+    background: #fff;
+  }
+  .tip {
+    background: #FFF5EB;
+    border-left: 4px solid #E8571F;
+    padding: 8px 14px;
+    border-radius: 0 8px 8px 0;
+    color: #3C2415;
+  }
+  .footer .brand-footer {
+    text-align: right;
+    font-style: italic;
+    letter-spacing: 1px;
+  }
+  .footer .brand-footer .sm {
+    font-size: 0.85em;
+    display: block;
+    margin-top: 2px;
+    letter-spacing: 2px;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 700px) {
+    .two-col { grid-template-columns: 1fr; }
+    .highlights { flex-wrap: wrap; }
+    .hl { flex: none; width: calc(33.3% - 1px); }
+    .hl:nth-child(4), .hl:nth-child(5) { width: calc(50% - 1px); }
+    .container { padding: 20px 16px; }
+  }
+  @media print { body { max-width: 100%; } }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="top-band"></div>
+  <div class="frame"></div>
+  <div class="corner tl"><svg viewBox="0 0 24 24" fill="none"><path d="M2 2 Q2 12 12 12" stroke="#C9A96E" stroke-width="1.5"/><path d="M2 2 L8 2" stroke="#C9A96E" stroke-width="1.5"/><path d="M2 2 L2 8" stroke="#C9A96E" stroke-width="1.5"/><circle cx="2" cy="2" r="1.5" fill="#C9A96E"/></svg></div>
+  <div class="corner tr"><svg viewBox="0 0 24 24" fill="none"><path d="M2 2 Q2 12 12 12" stroke="#C9A96E" stroke-width="1.5"/><path d="M2 2 L8 2" stroke="#C9A96E" stroke-width="1.5"/><path d="M2 2 L2 8" stroke="#C9A96E" stroke-width="1.5"/><circle cx="2" cy="2" r="1.5" fill="#C9A96E"/></svg></div>
+  <div class="corner bl"><svg viewBox="0 0 24 24" fill="none"><path d="M2 2 Q2 12 12 12" stroke="#C9A96E" stroke-width="1.5"/><path d="M2 2 L8 2" stroke="#C9A96E" stroke-width="1.5"/><path d="M2 2 L2 8" stroke="#C9A96E" stroke-width="1.5"/><circle cx="2" cy="2" r="1.5" fill="#C9A96E"/></svg></div>
+  <div class="corner br"><svg viewBox="0 0 24 24" fill="none"><path d="M2 2 Q2 12 12 12" stroke="#C9A96E" stroke-width="1.5"/><path d="M2 2 L8 2" stroke="#C9A96E" stroke-width="1.5"/><path d="M2 2 L2 8" stroke="#C9A96E" stroke-width="1.5"/><circle cx="2" cy="2" r="1.5" fill="#C9A96E"/></svg></div>
+
+  <div class="brand-top">Crafted for Excellence</div>
+  <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+  <h1><span class="wb">Wo-Bot</span> Hermes</h1>
+  <div class="sub">AI 智慧任務管理 Telegram 機器人</div>
+  <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+  <div class="badge">一級主管導入指南</div>
+  <div class="luxury-line">— Where AI Meets Artisan Workflow —</div>
+</div>
+
+<!-- BANNER ILLUSTRATION -->
+<div class="banner">
+<svg viewBox="0 0 900 160" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="160" fill="#B8D8E8"/>
+
+  <!-- Ground line -->
+  <rect x="0" y="130" width="900" height="30" fill="#E8D5B0" opacity="0.5"/>
+
+  <!-- Building 1: Task clipboard -->
+  <g transform="translate(30,30)">
+    <rect x="0" y="20" width="70" height="110" rx="6" fill="#F0E4D0"/>
+    <rect x="0" y="20" width="70" height="110" rx="6" stroke="#C9A96E" stroke-width="2" fill="none"/>
+    <rect x="22" y="10" width="26" height="16" rx="4" fill="#C9A96E"/>
+    <circle cx="35" cy="14" r="3" fill="#E8D5B0"/>
+    <rect x="12" y="40" width="46" height="4" rx="2" fill="#E8571F" opacity="0.7"/>
+    <rect x="12" y="52" width="36" height="4" rx="2" fill="#D94F1A" opacity="0.4"/>
+    <rect x="12" y="64" width="42" height="4" rx="2" fill="#D94F1A" opacity="0.4"/>
+    <path d="M12 80 L20 88 L40 68" stroke="#3D7A2E" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="12" y="96" width="46" height="4" rx="2" fill="#E8571F" opacity="0.7"/>
+    <rect x="12" y="108" width="30" height="4" rx="2" fill="#D94F1A" opacity="0.4"/>
+  </g>
+
+  <!-- Building 2: Chat bubble tower -->
+  <g transform="translate(130,45)">
+    <rect x="0" y="10" width="60" height="85" rx="4" fill="#E8571F" opacity="0.15"/>
+    <rect x="0" y="10" width="60" height="85" rx="4" stroke="#E8571F" stroke-width="2" fill="none"/>
+    <!-- chat bubbles inside -->
+    <rect x="8" y="22" width="34" height="14" rx="7" fill="#fff"/>
+    <rect x="18" y="42" width="34" height="14" rx="7" fill="#eeffde"/>
+    <rect x="8" y="62" width="38" height="14" rx="7" fill="#fff"/>
+    <!-- antenna -->
+    <line x1="30" y1="10" x2="30" y2="0" stroke="#E8571F" stroke-width="2"/>
+    <circle cx="30" cy="0" r="4" fill="#E8571F"/>
+    <!-- waves -->
+    <path d="M38 -2 Q44 -8 38 -14" stroke="#E8571F" stroke-width="1.5" fill="none" opacity="0.4"/>
+    <path d="M42 0 Q50 -10 42 -18" stroke="#E8571F" stroke-width="1.5" fill="none" opacity="0.25"/>
+  </g>
+
+  <!-- Building 3: Robot -->
+  <g transform="translate(220,20)">
+    <rect x="10" y="40" width="65" height="70" rx="8" fill="#F6F1EB"/>
+    <rect x="10" y="40" width="65" height="70" rx="8" stroke="#C9A96E" stroke-width="2" fill="none"/>
+    <!-- robot head -->
+    <rect x="18" y="14" width="50" height="32" rx="8" fill="#E8571F"/>
+    <circle cx="33" cy="28" r="5" fill="#fff"/>
+    <circle cx="53" cy="28" r="5" fill="#fff"/>
+    <circle cx="33" cy="28" r="2.5" fill="#3C2415"/>
+    <circle cx="53" cy="28" r="2.5" fill="#3C2415"/>
+    <path d="M36 36 Q43 42 50 36" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- antenna -->
+    <line x1="43" y1="14" x2="43" y2="4" stroke="#C9A96E" stroke-width="2"/>
+    <circle cx="43" cy="3" r="3" fill="#C9A96E"/>
+    <!-- body details -->
+    <rect x="22" y="55" width="40" height="8" rx="4" fill="#E8571F" opacity="0.2"/>
+    <rect x="22" y="70" width="40" height="8" rx="4" fill="#E8571F" opacity="0.15"/>
+    <rect x="22" y="85" width="40" height="8" rx="4" fill="#E8571F" opacity="0.1"/>
+    <!-- arms -->
+    <rect x="0" y="50" width="12" height="30" rx="6" fill="#C9A96E" opacity="0.5"/>
+    <rect x="73" y="50" width="12" height="30" rx="6" fill="#C9A96E" opacity="0.5"/>
+  </g>
+
+  <!-- Building 4: Calendar -->
+  <g transform="translate(330,50)">
+    <rect x="0" y="0" width="60" height="80" rx="4" fill="#fff"/>
+    <rect x="0" y="0" width="60" height="80" rx="4" stroke="#D94F1A" stroke-width="2" fill="none"/>
+    <rect x="0" y="0" width="60" height="20" rx="4" fill="#D94F1A"/>
+    <rect x="0" y="16" width="60" height="4" fill="#D94F1A"/>
+    <text x="30" y="15" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="sans-serif">MAR</text>
+    <!-- calendar dots -->
+    <circle cx="15" cy="36" r="3" fill="#E8D5B0"/>
+    <circle cx="30" cy="36" r="3" fill="#E8D5B0"/>
+    <circle cx="45" cy="36" r="3" fill="#3D7A2E"/>
+    <circle cx="15" cy="50" r="3" fill="#E8D5B0"/>
+    <circle cx="30" cy="50" r="3" fill="#D94F1A"/>
+    <circle cx="45" cy="50" r="3" fill="#E8D5B0"/>
+    <circle cx="15" cy="64" r="3" fill="#E8D5B0"/>
+    <circle cx="30" cy="64" r="3" fill="#E8D5B0"/>
+    <circle cx="45" cy="64" r="3" fill="#E8D5B0"/>
+    <!-- pin -->
+    <rect x="12" y="-6" width="6" height="12" rx="2" fill="#C9A96E"/>
+    <rect x="42" y="-6" width="6" height="12" rx="2" fill="#C9A96E"/>
+  </g>
+
+  <!-- Building 5: Bar chart -->
+  <g transform="translate(420,35)">
+    <rect x="0" y="15" width="70" height="95" rx="4" fill="#F6F1EB"/>
+    <rect x="0" y="15" width="70" height="95" rx="4" stroke="#C9A96E" stroke-width="2" fill="none"/>
+    <rect x="10" y="60" width="12" height="42" rx="2" fill="#E8571F" opacity="0.5"/>
+    <rect x="28" y="35" width="12" height="67" rx="2" fill="#E8571F" opacity="0.7"/>
+    <rect x="46" y="45" width="12" height="57" rx="2" fill="#E8571F" opacity="0.9"/>
+    <!-- trend arrow -->
+    <path d="M14 55 L34 32 L52 40" stroke="#3D7A2E" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <polygon points="52,35 57,42 49,42" fill="#3D7A2E"/>
+    <!-- top decoration -->
+    <rect x="20" y="5" width="30" height="14" rx="7" fill="#C9A96E" opacity="0.6"/>
+    <text x="35" y="15" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">KPI</text>
+  </g>
+
+  <!-- Building 6: Checkmark shield -->
+  <g transform="translate(520,30)">
+    <path d="M35 10 L65 25 L65 70 Q65 95 35 110 Q5 95 5 70 L5 25Z" fill="#3D7A2E" opacity="0.15"/>
+    <path d="M35 10 L65 25 L65 70 Q65 95 35 110 Q5 95 5 70 L5 25Z" stroke="#3D7A2E" stroke-width="2" fill="none"/>
+    <path d="M20 58 L30 68 L50 48" stroke="#3D7A2E" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- sparkles -->
+    <circle cx="60" cy="15" r="2" fill="#C9A96E"/>
+    <circle cx="68" cy="25" r="1.5" fill="#C9A96E" opacity="0.6"/>
+  </g>
+
+  <!-- Building 7: Gear/Settings -->
+  <g transform="translate(600,50)">
+    <rect x="0" y="0" width="55" height="80" rx="6" fill="#F0E4D0"/>
+    <rect x="0" y="0" width="55" height="80" rx="6" stroke="#C9A96E" stroke-width="2" fill="none"/>
+    <!-- gear -->
+    <circle cx="28" cy="35" r="14" fill="none" stroke="#E8571F" stroke-width="3"/>
+    <circle cx="28" cy="35" r="6" fill="#E8571F" opacity="0.3"/>
+    <!-- gear teeth -->
+    <rect x="24" y="17" width="8" height="6" rx="1" fill="#E8571F"/>
+    <rect x="24" y="47" width="8" height="6" rx="1" fill="#E8571F"/>
+    <rect x="10" y="31" width="6" height="8" rx="1" fill="#E8571F"/>
+    <rect x="40" y="31" width="6" height="8" rx="1" fill="#E8571F"/>
+    <!-- lines below -->
+    <rect x="10" y="60" width="35" height="3" rx="1" fill="#C9A96E" opacity="0.4"/>
+    <rect x="10" y="68" width="25" height="3" rx="1" fill="#C9A96E" opacity="0.3"/>
+  </g>
+
+  <!-- Building 8: Bell/Notification -->
+  <g transform="translate(680,45)">
+    <rect x="5" y="15" width="50" height="85" rx="6" fill="#E8571F" opacity="0.1"/>
+    <rect x="5" y="15" width="50" height="85" rx="6" stroke="#E8571F" stroke-width="2" fill="none"/>
+    <!-- bell -->
+    <path d="M30 25 Q30 20 25 20 Q15 20 15 35 L15 50 L10 55 L50 55 L45 50 L45 35 Q45 20 35 20 Q30 20 30 25" fill="#C9A96E"/>
+    <circle cx="30" cy="60" r="4" fill="#D94F1A"/>
+    <line x1="30" y1="14" x2="30" y2="20" stroke="#C9A96E" stroke-width="2"/>
+    <!-- notification badge -->
+    <circle cx="44" cy="24" r="8" fill="#D94F1A"/>
+    <text x="44" y="28" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">3</text>
+    <!-- lines -->
+    <rect x="14" y="72" width="32" height="3" rx="1" fill="#E8571F" opacity="0.3"/>
+    <rect x="14" y="80" width="24" height="3" rx="1" fill="#E8571F" opacity="0.2"/>
+  </g>
+
+  <!-- Building 9: Lock/Security -->
+  <g transform="translate(770,55)">
+    <rect x="0" y="20" width="55" height="75" rx="6" fill="#F6F1EB"/>
+    <rect x="0" y="20" width="55" height="75" rx="6" stroke="#C9A96E" stroke-width="2" fill="none"/>
+    <!-- lock body -->
+    <rect x="10" y="40" width="35" height="28" rx="4" fill="#C9A96E"/>
+    <!-- lock arch -->
+    <path d="M16 40 L16 30 Q16 16 28 16 Q40 16 40 30 L40 40" stroke="#C9A96E" stroke-width="4" fill="none"/>
+    <!-- keyhole -->
+    <circle cx="28" cy="52" r="4" fill="#3C2415"/>
+    <rect x="26" y="54" width="4" height="8" rx="1" fill="#3C2415"/>
+    <!-- top flag -->
+    <rect x="18" y="2" width="4" height="22" fill="#D94F1A"/>
+    <polygon points="22,2 38,9 22,16" fill="#D94F1A"/>
+  </g>
+
+  <!-- Decorative elements -->
+  <circle cx="165" cy="25" r="6" fill="#C9A96E" opacity="0.3"/>
+  <circle cx="410" cy="18" r="4" fill="#E8571F" opacity="0.2"/>
+  <circle cx="580" cy="22" r="5" fill="#C9A96E" opacity="0.25"/>
+  <circle cx="750" cy="30" r="3" fill="#E8571F" opacity="0.15"/>
+
+  <!-- Small stars/sparkles -->
+  <polygon points="480,12 482,18 488,18 483,22 485,28 480,24 475,28 477,22 472,18 478,18" fill="#C9A96E" opacity="0.4"/>
+  <polygon points="700,10 701,14 705,14 702,16 703,20 700,18 697,20 698,16 695,14 699,14" fill="#E8571F" opacity="0.3"/>
+</svg>
+</div>
+
+<div class="container">
+
+  <!-- 五大亮點 -->
+  <div class="sec-title">✦ 五大亮點</div>
+  <div class="highlights">
+    <div class="hl">
+      <div class="hl-i">🤖</div>
+      <div class="hl-t">AI 自動建任務</div>
+      <div class="hl-d">Enterprise-Grade NLP</div>
+    </div>
+    <div class="hl">
+      <div class="hl-i">📊</div>
+      <div class="hl-t">即時任務看板</div>
+      <div class="hl-d">Real-Time Dashboard</div>
+    </div>
+    <div class="hl">
+      <div class="hl-i">💬</div>
+      <div class="hl-t">口語化結案</div>
+      <div class="hl-d">Zero-Friction Closure</div>
+    </div>
+    <div class="hl">
+      <div class="hl-i">👆</div>
+      <div class="hl-t">全按鈕式操作</div>
+      <div class="hl-d">Tap-First Interface</div>
+    </div>
+    <div class="hl">
+      <div class="hl-i">🔒</div>
+      <div class="hl-t">權限分層</div>
+      <div class="hl-d">Role-Based Access Control</div>
+    </div>
+  </div>
+
+  <!-- 兩欄 -->
+  <div class="two-col">
+
+    <!-- 左欄：導入五步驟 -->
+    <div>
+      <div class="sec-title">📋 導入五步驟</div>
+
+      <!-- Step 1 -->
+      <div class="stp">
+        <div class="s-num">1</div>
+        <div class="s-body">
+          <h4>加入新機器人</h4>
+          <p>Telegram 搜尋 <span class="bot-id">@WoBot_Hermes_bot</span>，點 Start 啟動</p>
+          <div class="mini-mock">
+            <div class="mm-body">
+              <div class="tg-bubble out" style="font-size:0.9em;">/start<div class="tg-ts">13:14 <span class="tg-check">✓✓</span></div></div>
+              <div class="tg-bubble in" style="font-size:0.9em;">
+                🌐 請選擇語言
+                <div class="tg-btn-row">
+                  <div class="tg-btn" style="font-size:10px;padding:4px 3px;">中文</div>
+                  <div class="tg-btn" style="font-size:10px;padding:4px 3px;">English</div>
+                </div>
+                <div class="tg-ts">13:14</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="stp">
+        <div class="s-num">2</div>
+        <div class="s-body">
+          <h4>新 Bot 進群，舊 Bot 退群</h4>
+          <div class="flow">
+            <span class="fc c">🗑 移除舊 Bot</span><span class="fa">→</span>
+            <span class="fc b">🤖 加入新 Bot</span><span class="fa">→</span>
+            <span class="fc a">✅ 測試正常</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="stp">
+        <div class="s-num">3</div>
+        <div class="s-body">
+          <h4>點擊 /menu 指令選單</h4>
+          <p>輸入 /menu 開啟功能選單，所有指令都在這裡。</p>
+          <div class="mini-mock">
+            <div class="mm-body">
+              <div class="tg-bubble out" style="font-size:0.9em;">/menu<div class="tg-ts">13:27 <span class="tg-check">✓✓</span></div></div>
+              <div class="tg-bubble in" style="font-size:0.9em;">
+                🤖 <strong>WorkBot 指令選單</strong><br>請選擇分類：
+                <div class="tg-btn-row">
+                  <div class="tg-btn" style="font-size:10px;padding:4px 3px;">📋 任務查詢</div>
+                  <div class="tg-btn" style="font-size:10px;padding:4px 3px;">✏️ 任務操作</div>
+                </div>
+                <div class="tg-btn-row">
+                  <div class="tg-btn" style="font-size:10px;padding:4px 3px;">📊 報告&其他</div>
+                  <div class="tg-btn" style="font-size:10px;padding:4px 3px;">👔 主管指令</div>
+                </div>
+                <div class="tg-btn-row">
+                  <div class="tg-btn" style="font-size:10px;padding:4px 3px;">📖 使用教學</div>
+                </div>
+                <div class="tg-ts">13:27</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="stp">
+        <div class="s-num">4</div>
+        <div class="s-body">
+          <h4>教學手冊</h4>
+          <p>在 /menu 選單中點「📖 使用教學」，即可開啟完整使用手冊。</p>
+          <div class="mini-mock">
+            <div class="mm-body">
+              <div class="tg-bubble in" style="font-size:0.9em;">
+                🤖 <strong>WorkBot 指令選單</strong><br>請選擇分類：
+                <div class="tg-btn-row">
+                  <div class="tg-btn" style="font-size:10px;padding:4px 3px;background:#aaa;">📋 任務查詢</div>
+                  <div class="tg-btn" style="font-size:10px;padding:4px 3px;background:#aaa;">✏️ 任務操作</div>
+                </div>
+                <div class="tg-btn-row">
+                  <div class="tg-btn" style="font-size:10px;padding:4px 3px;background:#aaa;">📊 報告&其他</div>
+                  <div class="tg-btn" style="font-size:10px;padding:4px 3px;background:#aaa;">👔 主管指令</div>
+                </div>
+                <div class="tg-btn-row">
+                  <div class="tg-btn" style="font-size:10px;padding:4px 3px;background:#4a9e3f;border:2px solid #2d7a22;">👉 📖 使用教學 👈</div>
+                </div>
+                <div class="tg-ts">13:27</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="stp">
+        <div class="s-num">5</div>
+        <div class="s-body">
+          <h4>通知員工加入</h4>
+          <p>群組通知大家搜尋 <span class="bot-id">@WoBot_Hermes_bot</span> 按 Start 即可開始使用！</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右欄：實際使用畫面 -->
+    <div>
+      <div class="sec-title">💬 實際使用畫面</div>
+      <div class="tg-mock">
+        <div class="tg-topbar">
+          <div class="tg-avatar">👥</div>
+          <div><div class="tg-name">產品開發部</div><div class="tg-online">5 members, 1 bot</div></div>
+        </div>
+        <div class="tg-body">
+
+          <div class="tg-label-wrap"><span class="tg-label">▼ AI 自動建任務</span></div>
+          <div class="tg-bubble in">
+            <div class="sender mgr">王經理</div>
+            小陳，週五前把報價單寄給新客戶
+            <div class="tg-ts">14:30</div>
+          </div>
+          <div class="tg-bubble in">
+            <div class="sender bot">Wo-Bot Hermes</div>
+            🤖 <strong>AI 萃取到新任務：</strong><br><br>
+            🔄 報價單寄給新客戶 — 小陳 <span class="tg-code">AA0301</span>
+            <div class="tg-btn-row">
+              <div class="tg-btn">✅ AA0301 確認</div>
+              <div class="tg-btn">🔄 重新指派</div>
+            </div>
+            <div class="tg-ts">14:30</div>
+          </div>
+
+          <div class="tg-label-wrap"><span class="tg-label">▼ 口語化完成任務</span></div>
+          <div class="tg-bubble out">
+            報價單寄出去了
+            <div class="tg-ts">16:45 <span class="tg-check">✓✓</span></div>
+          </div>
+          <div class="tg-bubble in">
+            <div class="sender bot">Wo-Bot Hermes</div>
+            💡 偵測到完成信號<br><br>
+            📋 <strong>報價單寄給新客戶</strong> <span class="tg-code">AA0301</span><br>
+            👤 小陳<br>
+            💬 <em>報價單寄出去了</em>
+            <div class="tg-btn-row">
+              <div class="tg-btn">✅ 確認</div>
+              <div class="tg-btn">❌ 還沒完成</div>
+            </div>
+            <div class="tg-ts">16:45</div>
+          </div>
+
+          <div class="tg-label-wrap"><span class="tg-label">▼ 智慧日報</span></div>
+          <div class="tg-bubble out">
+            /report
+            <div class="tg-ts">17:00 <span class="tg-check">✓✓</span></div>
+          </div>
+          <div class="tg-bubble in">
+            <div class="sender bot">Wo-Bot Hermes</div>
+            📊 <strong>每日工作報表</strong><br>
+            2026-03-31 (週一)<br><br>
+            🏠 <span class="tg-code" style="color:#2c3e50">產品開發部</span><br>
+            &nbsp;&nbsp;💬 訊息: 28 ｜ 🆕 新增: 2<br>
+            &nbsp;&nbsp;✅ 完成: 3 ｜ 🔄 進行中: 2<br><br>
+            👤 <strong>小陳</strong> (3 tasks)<br>
+            &nbsp;&nbsp;✅ 報價單寄給新客戶 <span class="tg-code">AA0301</span><br>
+            &nbsp;&nbsp;✅ UI 原型修改 <span class="tg-code">AA0302</span><br>
+            &nbsp;&nbsp;🔄 會議紀錄整理 <span class="tg-code">AA0303</span> (1d)
+            <div class="tg-btn-row">
+              <div class="tg-btn">📋 展開全部細項</div>
+            </div>
+            <div class="tg-ts">17:00</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="tip">💡 忘記指令？隨時按 <strong>/menu</strong> → 📖 使用教學</div>
+  <div class="brand-footer">
+    Wo-Bot Hermes
+    <span class="sm">Precision AI for Distinguished Teams</span>
+  </div>
+</div>
+
+</body>
+</html>
